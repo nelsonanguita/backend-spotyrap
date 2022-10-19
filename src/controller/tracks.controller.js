@@ -10,7 +10,7 @@ const getTrack2 = async (req, res) => {
   res.send("track");
 };
 
-const getTrack = (req, res) => {
+const getTrack = async(req, res) => {
   let trackID;
   try {
     trackID = new ObjectID(req.params.trackID);
@@ -21,7 +21,7 @@ const getTrack = (req, res) => {
   res.set("content-type", "audio/mp3");
   res.set("accept-ranges", "bytes");
 
-  const db = getConnection();
+  const db = await getConnection();
 
   let bucket = new GridFSBucket(db, {
     bucketName: "tracks",
