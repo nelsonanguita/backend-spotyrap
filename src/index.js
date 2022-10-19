@@ -6,7 +6,7 @@ const trackRoutes = require('./routes/track.routes')
 //Initializations
 const app = express();
 
-const whitelist = ['http://192.168.1.89:8081','http://localhost:8081', 'https://myapp.co'];
+const whitelist = ['http://192.168.1.89:8081','http://localhost:8081', 'https://backend-spotyrap-production.up.railway.app'];
 const options = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
