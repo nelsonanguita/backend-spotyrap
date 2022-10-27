@@ -28,10 +28,11 @@ const upLoadFile = async(req, res) => {
          try {
             let audios = req.files
             for(let audio of audios){
-                buscaNombre(audio)             
+                buscaNombre(audio)
+                             
             }
 
-            res.sendStatus(201).send("Archivos subidos");
+            //res.sendStatus(201).send("Archivos subidos");
 
          } catch (error) {
            console.log(error);
