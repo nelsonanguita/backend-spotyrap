@@ -1,7 +1,11 @@
 const express = require('express')
 const cors = require('cors');
 const {PORT} = require('./../config/config')
-const trackRoutes = require('./routes/track.routes')
+const routerApi = require('./routes/index')
+
+const upLoadFile  = require('../middleware/multer')
+
+
 
 //Initializations
 const app = express();
@@ -16,7 +20,10 @@ const options = {
     }
   }
 }
+app.use(express.json());
+
 app.use(cors());
+
 
 // Configurar cabeceras y cors
 // app.use((req, res, next) => {
@@ -33,7 +40,11 @@ app.get('/',(req, res)=>{
     res.send("funciona????")
 })  
 
-app.use(trackRoutes)
+//app.use(trackRoutes)
+routerApi(app);
+app.use(upLoadFile);
+
+
 
 app.listen(PORT)
 console.log( `Servidor arriba ${PORT}` )  

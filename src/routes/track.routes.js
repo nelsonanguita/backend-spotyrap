@@ -1,10 +1,16 @@
 const {Router} = require('express')
-const router = Router();
-const { getTrack, uploadTrack, getList, prueba} = require('../controller/tracks.controller')
+const { getTrack, uploadTrack, getList} = require('../controller/tracks.controller')
+const upLoadFile  = require('../../middleware/multer')
 
-router.get('/tracks/:trackID', getTrack)  
-router.get('/tracks', getList)  
-router.post('/tracks', uploadTrack)
+const router = Router();
+
+
+router.get('/:trackID', getTrack)  
+router.get('/', getList)  
+
+
+//  validatorHandler(getCategorySchema, 'params'),
+
+router.post('/',upLoadFile);
 
 module.exports = router;
-
