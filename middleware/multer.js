@@ -20,7 +20,8 @@ const upLoadFile = async(req, res) => {
     }); 
     upload.array('tracks')
     (req, res, async(err) => {
-       
+      const listaNombre = req.body.lista
+
          if(!req.files){
            res.send("Files was not found");
            return;  
@@ -28,7 +29,7 @@ const upLoadFile = async(req, res) => {
          try {
             let audios = req.files
             for(let audio of audios){
-                buscaNombre(audio)
+                buscaNombre(audio,listaNombre)
                              
             }
 
@@ -57,7 +58,7 @@ const upLoadFile = async(req, res) => {
     });
 }
 
-function buscaNombre(listado) {
+function buscaNombre(listado, listaNombre) {
         
     new Promise((resolve, reject) => {
         new jsmediatags.Reader(listado.buffer)
@@ -79,7 +80,7 @@ function buscaNombre(listado) {
         .then(tagInfo => {
           // handle the onSuccess return
         //   console.log(tagInfo)
-          return guardar(tagInfo, listado)
+          return guardar(tagInfo, listado, listaNombre)
 
         })
         .catch(error => {
@@ -88,15 +89,18 @@ function buscaNombre(listado) {
 
 }
 
-const guardar = async(titulos, track)=>{
+const guardar = async(titulos, track, listaNombre)=>{
 console.log("guardar")
     const db = await getConnection();
 
     let metadata =titulos;
     let trackName = titulos.title;
+    if (!titulos.title) {
+      trackName = track.originalname
+    }
 
     const bucket = new GridFSBucket(db, {
-        bucketName: "tracks",
+        bucketName: "tracks_"+listaNombre,
       });
     const readableTrackStream = new Readable();
           
