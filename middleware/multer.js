@@ -11,12 +11,12 @@ const upLoadFile = async(req, res) => {
     const storage = multer.memoryStorage();
     const upload = multer({
         storage,
-        limits: {
-            fields: 1, // 1 non-file field
-            fileSize: 9000000, // 9mb maximum size
-            files: 10, // maximum 1 file
-            //parts: 3, // files + fields
-            },
+        // limits: {
+        //     fields: 1, // 1 non-file field
+        //     fileSize: 9000000, // 9mb maximum size
+        //     files: 10, // maximum 1 file
+        //     parts: 3, // files + fields
+        //     },
     }); 
     upload.array('tracks')
     (req, res, async(err) => {
@@ -27,13 +27,11 @@ const upLoadFile = async(req, res) => {
          }
          try {
             let audios = req.files
-            console.log(audios)
             for(let audio of audios){
                 buscaNombre(audio)             
             }
 
             res.sendStatus(201).send("Archivos subidos");
-
 
          } catch (error) {
            console.log(error);
@@ -59,33 +57,33 @@ const upLoadFile = async(req, res) => {
 }
 
 function buscaNombre(listado) {
-    
-new Promise((resolve, reject) => {
-    new jsmediatags.Reader(listado.buffer)
-      .read({
-        onSuccess: (tag) => {
-          console.log('Success!');
-          let nombre={
-            "artist":tag.tags.artist,
-            "title":tag.tags.title
-           }
-          resolve(nombre);
-        },
-        onError: (error) => {
-          console.log('Error');
-          reject(error);
-        }
-    });
-  })
-    .then(tagInfo => {
-      // handle the onSuccess return
-     //   console.log(tagInfo)
-      return guardar(tagInfo, listado)
+        
+    new Promise((resolve, reject) => {
+        new jsmediatags.Reader(listado.buffer)
+          .read({
+            onSuccess: (tag) => {
+              console.log('Success!');
+              let nombre={
+                "artist":tag.tags.artist,
+                "title":tag.tags.title
+              }
+              resolve(nombre);
+            },
+            onError: (error) => {
+              console.log('Error');
+              reject(error);
+            }
+        });
+      })
+        .then(tagInfo => {
+          // handle the onSuccess return
+        //   console.log(tagInfo)
+          return guardar(tagInfo, listado)
 
-    })
-    .catch(error => {
-      // handle errors
-    });
+        })
+        .catch(error => {
+          // handle errors
+        });
 
 }
 

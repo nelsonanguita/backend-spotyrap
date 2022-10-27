@@ -5,8 +5,6 @@ const routerApi = require('./routes/index')
 
 const upLoadFile  = require('../middleware/multer')
 
-
-
 //Initializations
 const app = express();
 
@@ -43,8 +41,6 @@ app.get('/',(req, res)=>{
 //app.use(trackRoutes)
 routerApi(app);
 app.use(upLoadFile);
-
-
 
 app.listen(PORT)
 console.log( `Servidor arriba ${PORT}` )  
